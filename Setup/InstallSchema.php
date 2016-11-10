@@ -1,6 +1,5 @@
 <?php
-
-namespace SnowIO\AttributeOptionCodes\Setup;
+namespace SnowIO\AttributeOptionCode\Setup;
 
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
@@ -24,31 +23,49 @@ class InstallSchema implements InstallSchemaInterface
 
         $table = $installer
             ->getConnection()
-            ->newTable($installer->getTable('option_codes'))
+            ->newTable($installer->getTable('option_code'))
             ->addColumn(
-                'entity_type',
-                Table::TYPE_INTEGER,
+                'option_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                 null,
-                ['nullable' => false],
-                'Entity Type'
-            )->addColumn(
-                'attribute_code',
-                Table::TYPE_TEXT,
-                null,
-                ['nullable' => false],
-                'Attribute Code'
+                ['unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Option Id'
+            )
+            ->addColumn(
+                'attribute_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                255,
+                ['unsigned' => true, 'nullable' => false],
+                'Attribute Id'
             )->addColumn(
                 'option_code',
                 Table::TYPE_TEXT,
-                null,
+                255,
                 ['nullable' => false],
                 'Option Code'
-            )->addColumn(
+            )
+            ->addIndex(
+                $installer->getIdxName(
+                    'option_code',
+                    ['attribute_id', 'option_code'],
+                    \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+                ),
+                ['attribute_id', 'option_code'],
+                ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
+            )
+            ->addForeignKey(
+                $installer->getFkName('option_code', 'option_id', 'eav_attribute_option', 'option_id'),
                 'option_id',
-                Table::TYPE_INTEGER,
-                null,
-                ['nullable' => false],
-                'Option Id'
+                $installer->getTable('eav_attribute_option'),
+                'option_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            )
+            ->addForeignKey(
+                $installer->getFkName('option_code', 'attribute_id', 'eav_attribute', 'attribute_id'),
+                'attribute_id',
+                $installer->getTable('eav_attribute'),
+                'attribute_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
             );
 
         $installer->getConnection()->createTable($table);

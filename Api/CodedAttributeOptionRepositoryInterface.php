@@ -1,5 +1,5 @@
 <?php
-namespace SnowIO\AttributeOptionCodes\Api;
+namespace SnowIO\AttributeOptionCode\Api;
 
 interface CodedAttributeOptionRepositoryInterface
 {
