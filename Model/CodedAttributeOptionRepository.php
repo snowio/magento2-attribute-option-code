@@ -1,10 +1,10 @@
 <?php
-namespace SnowIO\AttributeOptionCode\Model;
+namespace SnowIO\AttributeOptionCodes\Model;
 
 use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface;
+use SnowIO\AttributeOptionCodes\Api\CodedAttributeOptionRepositoryInterface;
 
 class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryInterface
 {
