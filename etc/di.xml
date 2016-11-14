@@ -3,4 +3,7 @@
     <preference
             for="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface"
             type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionRepository" />
+    <preference
+            for="SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface"
+            type="SnowIO\AttributeOptionCode\Model\ProductRepository" />
 </config>
