@@ -66,7 +66,8 @@ class ProductDataMapper
             $optionId = $this->attributeOptionCodeRepository
                 ->getOptionId(self::PRODUCT_ENTITY_TYPE, $customAttribute->getAttributeCode(), $optionCode);
             if (null === $optionId) {
-                throw new \RuntimeException("Option code {$optionCode} does not exist for attribute {$customAttribute->getAttributeCode()}.");
+                throw new \RuntimeException("Option code {$optionCode} does not ".
+                    "exist for attribute {$customAttribute->getAttributeCode()}.");
             }
             $product->setCustomAttribute($customAttribute->getAttributeCode(), $optionId);
         }
@@ -79,7 +80,8 @@ class ProductDataMapper
             $optionCode = $this->attributeOptionCodeRepository
                 ->getOptionCode(self::PRODUCT_ENTITY_TYPE, $customAttribute->getAttributeCode(), $optionId);
             if (null === $optionCode) {
-                throw new \RuntimeException("Option ID {$optionId} for attribute {$customAttribute->getAttributeCode()} does not have an associated option code.");
+                throw new \RuntimeException("Option ID {$optionId} for attribute ".
+                    "{$customAttribute->getAttributeCode()} does not have an associated option code.");
             }
             $product->setCustomAttribute($customAttribute->getAttributeCode(), $optionCode);
         }
