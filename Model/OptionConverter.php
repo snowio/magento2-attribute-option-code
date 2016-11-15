@@ -21,8 +21,8 @@ class OptionConverter
     public function __construct(
         AttributeOptionCodeRepository $optionCodeRepository,
         StoreRepositoryInterface $storeRepository,
-        AttributeOptionInterfaceFactory $magentoOptionFactory,
-        AttributeOptionLabelInterfaceFactory $magentoOptionLabelFactory
+        MagentoOptionFactory $magentoOptionFactory,
+        MagentoOptionLabelFactory $magentoOptionLabelFactory
     ) {
         $this->optionCodeRepository = $optionCodeRepository;
         $this->storeRepository = $storeRepository;
