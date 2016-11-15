@@ -1,7 +1,7 @@
 <?php
 namespace SnowIO\AttributeOptionCode\Api\Data;
 
-interface AttributeOptionInterface
+interface CodedAttributeOptionInterface
 {
     /**
      * Constants used as data array keys
@@ -79,14 +79,14 @@ interface AttributeOptionInterface
     /**
      * Get option label for store scopes
      *
-     * @return AttributeOptionLabelInterface[]|null
+     * @return CodedAttributeOptionLabelInterface[]|null
      */
     public function getStoreLabels();
 
     /**
      * Set option label for store scopes
      *
-     * @param AttributeOptionLabelInterface[] $storeLabels
+     * @param CodedAttributeOptionLabelInterface[] $storeLabels
      * @return $this
      */
     public function setStoreLabels(array $storeLabels = null);

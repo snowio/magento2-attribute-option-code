@@ -1,7 +1,7 @@
 <?php
 namespace SnowIO\AttributeOptionCode\Api\Data;
 
-interface AttributeOptionLabelInterface
+interface CodedAttributeOptionLabelInterface
 {
     const LABEL = 'label';
 

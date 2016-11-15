@@ -6,4 +6,10 @@
     <preference
             for="SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface"
             type="SnowIO\AttributeOptionCode\Model\ProductRepository" />
+    <preference
+            for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface"
+            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOption" />
+    <preference
+            for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
+            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
 </config>

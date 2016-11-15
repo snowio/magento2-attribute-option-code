@@ -3,9 +3,9 @@ namespace SnowIO\AttributeOptionCode\Model;
 
 use Magento\Framework\Exception\InputException;
 use Magento\Store\Api\StoreRepositoryInterface;
-use SnowIO\AttributeOptionCode\Api\Data\AttributeOptionInterface as Option;
+use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface as CodedOption;
 use Magento\Eav\Api\Data\AttributeOptionInterface as MagentoOption;
-use SnowIO\AttributeOptionCode\Api\Data\AttributeOptionLabelInterface as OptionLabel;
+use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface as CodedOptionLabel;
 use Magento\Eav\Api\Data\AttributeOptionLabelInterface as MagentoOptionLabel;
 use Magento\Eav\Api\Data\AttributeOptionInterfaceFactory as MagentoOptionFactory;
 use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory as MagentoOptionLabelFactory;
@@ -35,7 +35,7 @@ class OptionConverter
      * @param string $attributeCode
      * @return MagentoOption
      */
-    public function convertOptionToMagentoOption($entityType, $attributeCode, Option $option)
+    public function convertCodedOptionToMagentoOption($entityType, $attributeCode, CodedOption $option)
     {
         $optionCode = $option->getValue();
 
@@ -52,7 +52,7 @@ class OptionConverter
         $magentoOption->setIsDefault($option->getIsDefault());
 
         if (null !== $labels = $option->getStoreLabels()) {
-            $magentoOption->setStoreLabels(array_map([$this, 'convertOptionLabelToMagentoOptionLabel'], $labels));
+            $magentoOption->setStoreLabels(array_map([$this, 'convertCodedOptionLabelToMagentoOptionLabel'], $labels));
         }
 
         return $magentoOption;
@@ -61,7 +61,7 @@ class OptionConverter
     /**
      * @return MagentoOptionLabel
      */
-    public function convertOptionLabelToMagentoOptionLabel(OptionLabel $optionLabel)
+    public function convertCodedOptionLabelToMagentoOptionLabel(CodedOptionLabel $optionLabel)
     {
         /** @var MagentoOptionLabel $magentoOptionLabel */
         $magentoOptionLabel = $this->magentoOptionLabelFactory->create();

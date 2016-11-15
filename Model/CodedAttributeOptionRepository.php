@@ -4,7 +4,7 @@ namespace SnowIO\AttributeOptionCode\Model;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface;
-use SnowIO\AttributeOptionCode\Api\Data\AttributeOptionInterface;
+use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface;
 use Magento\Eav\Api\Data\AttributeOptionInterface as MagentoAttributeOption;
 
 class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryInterface
@@ -23,7 +23,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $this->optionConverter = $optionConverter;
     }
 
-    public function save($entityType, $attributeCode, AttributeOptionInterface $option)
+    public function save($entityType, $attributeCode, CodedAttributeOptionInterface $option)
     {
         $optionCode = $option->getValue();
         $magentoOption = $this->optionConverter->convertOptionToMagentoOption($entityType, $attributeCode, $option);

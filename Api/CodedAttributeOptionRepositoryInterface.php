@@ -3,7 +3,7 @@ namespace SnowIO\AttributeOptionCode\Api;
 
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\StateException;
-use SnowIO\AttributeOptionCode\Api\Data\AttributeOptionInterface;
+use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface;
 
 interface CodedAttributeOptionRepositoryInterface
 {
@@ -15,7 +15,7 @@ interface CodedAttributeOptionRepositoryInterface
      * @throws StateException
      * @throws InputException
      */
-    public function save($entityType, $attributeCode, AttributeOptionInterface $option);
+    public function save($entityType, $attributeCode, CodedAttributeOptionInterface $option);
 
     /**
      * Delete option from attribute
