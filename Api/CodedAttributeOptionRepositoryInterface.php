@@ -1,6 +1,10 @@
 <?php
 namespace SnowIO\AttributeOptionCode\Api;
 
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\StateException;
+use SnowIO\AttributeOptionCode\Api\Data\AttributeOptionInterface;
+
 interface CodedAttributeOptionRepositoryInterface
 {
     /**
@@ -8,12 +12,10 @@ interface CodedAttributeOptionRepositoryInterface
      *
      * @param int $entityType
      * @param string $attributeCode
-     * @param \Magento\Eav\Api\Data\AttributeOptionInterface $option
-     * @return \Magento\Eav\Api\Data\AttributeOptionInterface
-     * @throws \Magento\Framework\Exception\StateException
-     * @throws \Magento\Framework\Exception\InputException
+     * @throws StateException
+     * @throws InputException
      */
-    public function save($entityType, $attributeCode, $option);
+    public function save($entityType, $attributeCode, AttributeOptionInterface $option);
 
     /**
      * Delete option from attribute
@@ -21,9 +23,8 @@ interface CodedAttributeOptionRepositoryInterface
      * @param int $entityType
      * @param string $attributeCode
      * @param string $optionCode
-     * @return bool
-     * @throws \Magento\Framework\Exception\StateException
-     * @throws \Magento\Framework\Exception\InputException
+     * @throws StateException
+     * @throws InputException
      */
     public function delete($entityType, $attributeCode, $optionCode);
 }

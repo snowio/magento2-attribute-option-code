@@ -2,41 +2,37 @@
 namespace SnowIO\AttributeOptionCode\Model;
 
 use Magento\Eav\Api\AttributeOptionManagementInterface;
-use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface;
+use SnowIO\AttributeOptionCode\Api\Data\AttributeOptionInterface;
+use Magento\Eav\Api\Data\AttributeOptionInterface as MagentoAttributeOption;
 
 class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryInterface
 {
     private $optionManagementService;
     private $optionCodeRepository;
+    private $optionConverter;
 
     public function __construct(
         AttributeOptionManagementInterface $optionManagementService,
-        AttributeOptionCodeRepository $optionCodeRepository
+        AttributeOptionCodeRepository $optionCodeRepository,
+        OptionConverter $optionConverter
     ) {
         $this->optionManagementService = $optionManagementService;
         $this->optionCodeRepository = $optionCodeRepository;
+        $this->optionConverter = $optionConverter;
     }
 
-    public function save($entityType, $attributeCode, $option)
+    public function save($entityType, $attributeCode, AttributeOptionInterface $option)
     {
         $optionCode = $option->getValue();
+        $magentoOption = $this->optionConverter->convertOptionToMagentoOption($entityType, $attributeCode, $option);
 
-        if (null === $optionCode) {
-            throw new InputException;
-        }
-
-        $existingOptionId = $this->optionCodeRepository->getOptionId($entityType, $attributeCode, $optionCode);
-        $option->setValue($existingOptionId);
-
-        if (null === $existingOptionId) {
-            $this->addOption($entityType, $attributeCode, $optionCode, $option);
+        if (null === $magentoOption->getValue()) {
+            $this->addOption($entityType, $attributeCode, $optionCode, $magentoOption);
         } else {
-            $this->optionManagementService->add($entityType, $attributeCode, $option);
+            $this->optionManagementService->add($entityType, $attributeCode, $magentoOption);
         }
-
-        return $option;
     }
 
     public function delete($entityType, $attributeCode, $optionCode)
@@ -44,7 +40,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $optionId = $this->optionCodeRepository->getOptionId($entityType, $attributeCode, $optionCode);
         
         if (null === $optionId) {
-            return true;
+            return;
         }
 
         try {
@@ -54,11 +50,9 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         }
 
         $this->optionCodeRepository->removeOption($entityType, $attributeCode, $optionCode, $optionId);
-
-        return true;
     }
 
-    private function addOption($entityType, $attributeCode, $optionCode, $option)
+    private function addOption($entityType, $attributeCode, $optionCode, MagentoAttributeOption $option)
     {
         $maxExistingOptionId = $this->optionCodeRepository->getMaxOptionId($entityType, $attributeCode) ?: 0;
         $this->optionManagementService->add($entityType, $attributeCode, $option);
