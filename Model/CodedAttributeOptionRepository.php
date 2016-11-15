@@ -26,7 +26,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
     public function save($entityType, $attributeCode, CodedAttributeOptionInterface $option)
     {
         $optionCode = $option->getValue();
-        $magentoOption = $this->optionConverter->convertOptionToMagentoOption($entityType, $attributeCode, $option);
+        $magentoOption = $this->optionConverter->convertCodedOptionToMagentoOption($entityType, $attributeCode, $option);
 
         if (null === $magentoOption->getValue()) {
             $this->addOption($entityType, $attributeCode, $optionCode, $magentoOption);
