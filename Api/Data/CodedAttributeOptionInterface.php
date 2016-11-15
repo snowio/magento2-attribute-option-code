@@ -79,14 +79,14 @@ interface CodedAttributeOptionInterface
     /**
      * Get option label for store scopes
      *
-     * @return CodedAttributeOptionLabelInterface[]|null
+     * @return \SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface[]|null
      */
     public function getStoreLabels();
 
     /**
      * Set option label for store scopes
      *
-     * @param CodedAttributeOptionLabelInterface[] $storeLabels
+     * @param \SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface[] $storeLabels
      * @return $this
      */
     public function setStoreLabels(array $storeLabels = null);
