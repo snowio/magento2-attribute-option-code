@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference
-            for="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface"
-            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionRepository" />
+        for="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface"
+        type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionRepository" />
     <preference
-            for="SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface"
-            type="SnowIO\AttributeOptionCode\Model\ProductRepository" />
+        for="SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface"
+        type="SnowIO\AttributeOptionCode\Model\ProductRepository" />
     <preference
-            for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface"
-            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOption" />
+        for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface"
+        type="SnowIO\AttributeOptionCode\Model\CodedAttributeOption" />
     <preference
-            for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
-            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
+        for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
+        type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
 </config>
