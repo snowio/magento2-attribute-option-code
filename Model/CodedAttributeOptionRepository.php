@@ -35,6 +35,8 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         } else {
             $this->optionManagementService->add($entityType, $attributeCode, $option);
         }
+
+        return $option;
     }
 
     public function delete($entityType, $attributeCode, $optionCode)
@@ -42,7 +44,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $optionId = $this->optionCodeRepository->getOptionId($entityType, $attributeCode, $optionCode);
         
         if (null === $optionId) {
-            return;
+            return true;
         }
 
         try {
@@ -52,6 +54,8 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         }
 
         $this->optionCodeRepository->removeOption($entityType, $attributeCode, $optionCode, $optionId);
+
+        return true;
     }
 
     private function addOption($entityType, $attributeCode, $optionCode, $option)

@@ -6,9 +6,10 @@ interface CodedAttributeOptionRepositoryInterface
     /**
      * Save option
      *
-     * @param string $attributeCode
      * @param int $entityType
+     * @param string $attributeCode
      * @param \Magento\Eav\Api\Data\AttributeOptionInterface $option
+     * @return \Magento\Eav\Api\Data\AttributeOptionInterface
      * @throws \Magento\Framework\Exception\StateException
      * @throws \Magento\Framework\Exception\InputException
      */
@@ -20,6 +21,7 @@ interface CodedAttributeOptionRepositoryInterface
      * @param int $entityType
      * @param string $attributeCode
      * @param string $optionCode
+     * @return bool
      * @throws \Magento\Framework\Exception\StateException
      * @throws \Magento\Framework\Exception\InputException
      */
