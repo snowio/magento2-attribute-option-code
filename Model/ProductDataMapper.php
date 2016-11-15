@@ -61,7 +61,7 @@ class ProductDataMapper
 
     private function replaceOptionCodeWithOptionId(AttributeInterface $customAttribute, ProductInterface $product)
     {
-        $optionCode = $customAttribute->getValue() ?? '';
+        $optionCode = (string)$customAttribute->getValue();
         if ('' !== $optionCode) {
             $optionId = $this->attributeOptionCodeRepository
                 ->getOptionId(self::PRODUCT_ENTITY_TYPE, $customAttribute->getAttributeCode(), $optionCode);
@@ -75,7 +75,7 @@ class ProductDataMapper
 
     private function replaceOptionIdWithOptionCode(AttributeInterface $customAttribute, ProductInterface $product)
     {
-        $optionId = $customAttribute->getValue() ?? '';
+        $optionId = (string)$customAttribute->getValue();
         if ('' !== $optionId) {
             $optionCode = $this->attributeOptionCodeRepository
                 ->getOptionCode(self::PRODUCT_ENTITY_TYPE, $customAttribute->getAttributeCode(), $optionId);
