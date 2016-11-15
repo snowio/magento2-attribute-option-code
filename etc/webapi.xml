@@ -6,5 +6,16 @@
             <resource ref="Magento_Catalog::products" />
         </resources>
     </route>
-
+    <route url="/V1/code-options" method="POST">
+        <service class="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface" method="save" />
+        <resources>
+            <resource ref="Magento_Catalog::attributes_attributes" />
+        </resources>
+    </route>
+    <route url="/V1/code-options" method="DELETE">
+        <service class="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface" method="delete" />
+        <resources>
+            <resource ref="Magento_Catalog::attributes_attributes" />
+        </resources>
+    </route>
 </routes>
