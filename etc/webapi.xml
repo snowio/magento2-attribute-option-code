@@ -12,7 +12,7 @@
             <resource ref="Magento_Catalog::attributes_attributes" />
         </resources>
     </route>
-    <route url="/V1/code-options" method="DELETE">
+    <route url="/V1/code-options/entity-type/:entityType/attribute-code/:attributeCode/option-code/:optionCode" method="DELETE">
         <service class="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface" method="delete" />
         <resources>
             <resource ref="Magento_Catalog::attributes_attributes" />
