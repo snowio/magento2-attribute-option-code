@@ -28,6 +28,20 @@ class AttributeOptionCodeRepository
         return $result ? (int)$result : null;
     }
 
+    public function getOptionCode($entityType, $attributeCode, $optionId)
+    {
+        $select = $this->dbConnection->select()
+            ->from(['t' => $this->dbConnection->getTableName('option_code')], 'option_code')
+            ->join(['a' => $this->dbConnection->getTableName('eav_attribute')], 'a.attribute_id = t.attribute_id', [])
+            ->where('a.attribute_code = ?', $attributeCode)
+            ->where('a.entity_type_id = ?', $entityType)
+            ->where('t.option_id = ?', $optionId);
+
+        $result = $this->dbConnection->fetchOne($select);
+
+        return $result ? (int)$result : null;
+    }
+
     public function setOptionId($entityType, $attributeCode, $optionCode, $optionId)
     {
         $tableName = $this->dbConnection->getTableName('option_code');

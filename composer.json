@@ -1,7 +1,6 @@
 {
     "name": "snowio/magento2-attribute-option-code",
     "license": "MIT",
-    "description": "",
     "type": "magento2-module",
     "authors": [
         {
@@ -10,7 +9,10 @@
         }
     ],
     "require": {
-        "php": ">=7"
+        "php": ">=5.6",
+        "magento/framework": "^100",
+        "magento/module-eav": "^100",
+        "magento/module-catalog": "^101"
     },
     "autoload": {
         "files": [ "registration.php" ],
