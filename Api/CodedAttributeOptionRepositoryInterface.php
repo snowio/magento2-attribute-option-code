@@ -12,6 +12,7 @@ interface CodedAttributeOptionRepositoryInterface
      *
      * @param int $entityType
      * @param string $attributeCode
+     * @return void
      * @throws StateException
      * @throws InputException
      */
@@ -23,6 +24,7 @@ interface CodedAttributeOptionRepositoryInterface
      * @param int $entityType
      * @param string $attributeCode
      * @param string $optionCode
+     * @return void
      * @throws StateException
      * @throws InputException
      */
