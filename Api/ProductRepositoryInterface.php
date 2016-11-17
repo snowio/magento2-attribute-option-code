@@ -1,18 +1,18 @@
 <?php
 namespace SnowIO\AttributeOptionCode\Api;
 
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\StateException;
+use SnowIO\AttributeOptionCode\Api\Data\ProductInterface;
 
 interface ProductRepositoryInterface
 {
     /**
      * Create product
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     * @param \SnowIO\AttributeOptionCode\Api\Data\ProductInterface $product
      * @param bool $saveOptions
-     * @return \Magento\Catalog\Api\Data\ProductInterface
+     * @return void
      * @throws InputException
      * @throws StateException
      * @throws CouldNotSaveException

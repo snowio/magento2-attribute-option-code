@@ -12,4 +12,19 @@
     <preference
         for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
         type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
+    <preference for="SnowIO\AttributeOptionCode\Api\Data\ProductInterface" type="Magento\Catalog\Model\Product" />
+
+    <type name="Magento\Eav\Model\EavCustomAttributeTypeLocator">
+        <arguments>
+            <argument name="serviceEntityTypeMap" xsi:type="array">
+                <item name="SnowIO\AttributeOptionCode\Api\Data\ProductInterface" xsi:type="const">Magento\Catalog\Api\Data\ProductAttributeInterface::ENTITY_TYPE_CODE</item>
+            </argument>
+            <argument name="serviceBackendModelDataInterfaceMap" xsi:type="array">
+                <item name="SnowIO\AttributeOptionCode\Api\Data\ProductInterface" xsi:type="array">
+                    <item name="Magento\Eav\Model\Attribute\Data\Select" xsi:type="string">string</item>
+                    <item name="Magento\Eav\Model\Attribute\Data\Multiselect" xsi:type="string">string[]</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

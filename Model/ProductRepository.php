@@ -1,7 +1,7 @@
 <?php
 namespace SnowIO\AttributeOptionCode\Model;
 
-use Magento\Catalog\Api\Data\ProductInterface;
+use SnowIO\AttributeOptionCode\Api\Data\ProductInterface;
 use SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
@@ -20,7 +20,6 @@ class ProductRepository implements ProductRepositoryInterface
     public function save(ProductInterface $product, $saveOptions = false)
     {
         $this->productDataMapper->replaceOptionCodesWithOptionIds($product);
-
-        return $this->vanillaRepository->save($product, $saveOptions);
+        $this->vanillaRepository->save($product, $saveOptions);
     }
 }
