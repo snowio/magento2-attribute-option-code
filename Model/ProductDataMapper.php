@@ -4,6 +4,7 @@ namespace SnowIO\AttributeOptionCode\Model;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductAttributeManagementInterface;
 use Magento\Framework\Api\AttributeInterface;
+use Magento\Eav\Model\Entity\Attribute\Source\Table;
 
 class ProductDataMapper
 {
@@ -49,7 +50,7 @@ class ProductDataMapper
             $attributes = $this->productAttributeManagement->getAttributes($attributeSetId);
             $attributeCodes = [];
             foreach ($attributes as $attribute) {
-                if ($attribute->usesSource()) {
+                if ($this->shouldMapAttribute($attribute)) {
                     $attributeCodes[] = $attribute->getAttributeCode();
                 }
             }
@@ -85,5 +86,16 @@ class ProductDataMapper
             }
             $product->setCustomAttribute($customAttribute->getAttributeCode(), $optionCode);
         }
+    }
+
+    private function shouldMapAttribute(\Magento\Eav\Api\Data\AttributeInterface $attribute)
+    {
+        $sourceModel = $attribute->getSourceModel();
+
+        if (null === $sourceModel) {
+            return in_array($attribute->getFrontendInput(), ['select', 'multiselect']);
+        }
+
+        return $sourceModel === Table::class;
     }
 }
