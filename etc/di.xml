@@ -12,7 +12,9 @@
     <preference
         for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
         type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
-    <preference for="SnowIO\AttributeOptionCode\Api\Data\ProductInterface" type="Magento\Catalog\Model\Product" />
+    <preference
+        for="SnowIO\AttributeOptionCode\Api\Data\ProductInterface"
+        type="SnowIO\AttributeOptionCode\Model\Product" />
 
     <type name="Magento\Eav\Model\EavCustomAttributeTypeLocator">
         <arguments>
