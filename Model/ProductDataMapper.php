@@ -62,16 +62,38 @@ class ProductDataMapper
 
     private function replaceOptionCodeWithOptionId(AttributeInterface $customAttribute, ProductInterface $product)
     {
-        $optionCode = (string)$customAttribute->getValue();
-        if ('' !== $optionCode) {
-            $optionId = $this->attributeOptionCodeRepository
-                ->getOptionId(self::PRODUCT_ENTITY_TYPE, $customAttribute->getAttributeCode(), $optionCode);
-            if (null === $optionId) {
-                throw new \RuntimeException("Option code {$optionCode} does not ".
-                    "exist for attribute {$customAttribute->getAttributeCode()}.");
-            }
-            $product->setCustomAttribute($customAttribute->getAttributeCode(), $optionId);
+        $attributeCode = $customAttribute->getAttributeCode();
+        $optionCodeOrCodes = $customAttribute->getValue();
+
+        if (is_array($optionCodeOrCodes)) {
+            // suppress errors below because array_map generates a warning when the map fn throws
+            $optionIdOrIds = @array_map(function ($optionCode) use ($attributeCode) {
+                return $this->getOptionId($attributeCode, $optionCode);
+            }, $optionCodeOrCodes);
+        } else {
+            $optionIdOrIds = $this->getOptionId($attributeCode, $optionCodeOrCodes);
         }
+
+        $product->setCustomAttribute($attributeCode, $optionIdOrIds);
+    }
+
+    private function getOptionId($attributeCode, $optionCode)
+    {
+        $optionCode = (string)$optionCode;
+
+        if ('' === $optionCode) {
+            return null;
+        }
+
+        $optionId = $this->attributeOptionCodeRepository
+            ->getOptionId(self::PRODUCT_ENTITY_TYPE, $attributeCode, $optionCode);
+
+        if (null === $optionId) {
+            throw new \RuntimeException("Option code {$optionCode} does not ".
+                "exist for attribute $attributeCode.");
+        }
+
+        return $optionId;
     }
 
     private function replaceOptionIdWithOptionCode(AttributeInterface $customAttribute, ProductInterface $product)
