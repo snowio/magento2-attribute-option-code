@@ -14,11 +14,9 @@ Please refer to the endpoint table for uri endpoint paths.
 
 ## Installation
 ```
-composer require snowio/attribute-option-code
-php bin/magento setup:upgrade
+composer require snowio/magento2-attribute-option-code
 php bin/magento module:enable SnowIO_AttributeOptionCode
-php bin/magento setup:di:compile
-php bin/magento cache:flush
+php bin/magento setup:upgrade
 ```
 
 ## Usage
