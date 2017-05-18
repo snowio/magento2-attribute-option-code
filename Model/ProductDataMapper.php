@@ -17,7 +17,7 @@ class ProductDataMapper
     private $codesOfAttributesToMap = [];
     private $attributeOptionCodeRepository;
 
-    const PRODUCT_ENTITY_TYPE = 4;
+    const PRODUCT_ENTITY_TYPE_ID = 4;
     const PRODUCT_ENTITY_TYPE_CODE = 'catalog_product';
 
     public function __construct(
@@ -96,7 +96,7 @@ class ProductDataMapper
         }
 
         $optionId = $this->attributeOptionCodeRepository
-            ->getOptionId(self::PRODUCT_ENTITY_TYPE, $attributeCode, $optionCode);
+            ->getOptionId(self::PRODUCT_ENTITY_TYPE_ID, $attributeCode, $optionCode);
 
         if (null === $optionId) {
             /** @var CodedOption $codedOption */
@@ -105,7 +105,7 @@ class ProductDataMapper
                 ->setLabel($optionCode);
             $this->codedOptionRepository->save(self::PRODUCT_ENTITY_TYPE_CODE, $attributeCode, $codedOption);
             $optionId = $this->attributeOptionCodeRepository
-                ->getOptionId(self::PRODUCT_ENTITY_TYPE, $attributeCode, $optionCode);
+                ->getOptionId(self::PRODUCT_ENTITY_TYPE_ID, $attributeCode, $optionCode);
         }
 
         return $optionId;
@@ -116,7 +116,7 @@ class ProductDataMapper
         $optionId = (string)$customAttribute->getValue();
         if ('' !== $optionId) {
             $optionCode = $this->attributeOptionCodeRepository
-                ->getOptionCode(self::PRODUCT_ENTITY_TYPE, $customAttribute->getAttributeCode(), $optionId);
+                ->getOptionCode(self::PRODUCT_ENTITY_TYPE_ID, $customAttribute->getAttributeCode(), $optionId);
             if (null === $optionCode) {
                 throw new \RuntimeException("Option ID {$optionId} for attribute ".
                     "{$customAttribute->getAttributeCode()} does not have an associated option code.");
