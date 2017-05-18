@@ -5,19 +5,29 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductAttributeManagementInterface;
 use Magento\Framework\Api\AttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
+use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface as CodedOptionRepository;
+use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface as CodedOption;
+use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterfaceFactory as CodedOptionFactory;
 
 class ProductDataMapper
 {
+    private $codedOptionRepository;
+    private $codedOptionFactory;
     private $productAttributeManagement;
     private $codesOfAttributesToMap = [];
     private $attributeOptionCodeRepository;
 
     const PRODUCT_ENTITY_TYPE = 4;
+    const PRODUCT_ENTITY_TYPE_CODE = 'catalog_product';
 
     public function __construct(
+        CodedOptionRepository $codedOptionRepository,
+        CodedOptionFactory $codedOptionFactory,
         ProductAttributeManagementInterface $productAttributeManagement,
         AttributeOptionCodeRepository $attributeOptionCodeRepository
     ) {
+        $this->codedOptionRepository = $codedOptionRepository;
+        $this->codedOptionFactory = $codedOptionFactory;
         $this->productAttributeManagement = $productAttributeManagement;
         $this->attributeOptionCodeRepository = $attributeOptionCodeRepository;
     }
@@ -68,16 +78,16 @@ class ProductDataMapper
         if (is_array($optionCodeOrCodes)) {
             // suppress errors below because array_map generates a warning when the map fn throws
             $optionIdOrIds = @array_map(function ($optionCode) use ($attributeCode) {
-                return $this->getOptionId($attributeCode, $optionCode);
+                return $this->getOrCreateOptionId($attributeCode, $optionCode);
             }, $optionCodeOrCodes);
         } else {
-            $optionIdOrIds = $this->getOptionId($attributeCode, $optionCodeOrCodes);
+            $optionIdOrIds = $this->getOrCreateOptionId($attributeCode, $optionCodeOrCodes);
         }
 
         $product->setCustomAttribute($attributeCode, $optionIdOrIds);
     }
 
-    private function getOptionId($attributeCode, $optionCode)
+    private function getOrCreateOptionId($attributeCode, $optionCode)
     {
         $optionCode = (string)$optionCode;
 
@@ -89,8 +99,13 @@ class ProductDataMapper
             ->getOptionId(self::PRODUCT_ENTITY_TYPE, $attributeCode, $optionCode);
 
         if (null === $optionId) {
-            throw new \RuntimeException("Option code {$optionCode} does not ".
-                "exist for attribute $attributeCode.");
+            /** @var CodedOption $codedOption */
+            $codedOption = $this->codedOptionFactory->create()
+                ->setValue($optionCode)
+                ->setLabel($optionCode);
+            $this->codedOptionRepository->save(self::PRODUCT_ENTITY_TYPE_CODE, $attributeCode, $codedOption);
+            $optionId = $this->attributeOptionCodeRepository
+                ->getOptionId(self::PRODUCT_ENTITY_TYPE, $attributeCode, $optionCode);
         }
 
         return $optionId;
