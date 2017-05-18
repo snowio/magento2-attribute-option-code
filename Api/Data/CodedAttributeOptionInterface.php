@@ -42,7 +42,7 @@ interface CodedAttributeOptionInterface
      * Set option value
      *
      * @param string $value
-     * @return string
+     * @return $this
      */
     public function setValue($value);
 
