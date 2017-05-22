@@ -18,7 +18,6 @@ class ProductDataMapper
     private $attributeOptionCodeRepository;
 
     const PRODUCT_ENTITY_TYPE_ID = 4;
-    const PRODUCT_ENTITY_TYPE_CODE = 'catalog_product';
 
     public function __construct(
         CodedOptionRepository $codedOptionRepository,
@@ -103,7 +102,7 @@ class ProductDataMapper
             $codedOption = $this->codedOptionFactory->create()
                 ->setValue($optionCode)
                 ->setLabel($optionCode);
-            $this->codedOptionRepository->save(self::PRODUCT_ENTITY_TYPE_CODE, $attributeCode, $codedOption);
+            $this->codedOptionRepository->save(self::PRODUCT_ENTITY_TYPE_ID, $attributeCode, $codedOption);
             $optionId = $this->attributeOptionCodeRepository
                 ->getOptionId(self::PRODUCT_ENTITY_TYPE_ID, $attributeCode, $optionCode);
         }
