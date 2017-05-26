@@ -2,7 +2,9 @@
 namespace SnowIO\AttributeOptionCode\Model;
 
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\Context;
+use Magento\Framework\Phrase;
 
 class AttributeOptionCodeRepository
 {
@@ -91,7 +93,7 @@ class AttributeOptionCodeRepository
         $attributeId = $this->dbConnection->fetchOne($select);
 
         if ('' === (string)$attributeId) {
-            throw new \RuntimeException('The specified attribute does not exist.');
+            throw new LocalizedException(new Phrase('The attribute %1 does not exist.', [$attributeCode]));
         }
 
         return (int)$attributeId;

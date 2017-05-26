@@ -2,6 +2,7 @@
 namespace SnowIO\AttributeOptionCode\Model;
 
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\Phrase;
 use Magento\Store\Api\StoreRepositoryInterface;
 use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface as CodedOption;
 use Magento\Eav\Api\Data\AttributeOptionInterface as MagentoOption;
@@ -40,7 +41,7 @@ class OptionConverter
         $optionCode = $option->getValue();
 
         if (null === $optionCode) {
-            throw new InputException;
+            throw new InputException(new Phrase('Missing required option code.'));
         }
 
         /** @var MagentoOption $magentoOption */
