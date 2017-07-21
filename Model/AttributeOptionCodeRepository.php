@@ -41,7 +41,7 @@ class AttributeOptionCodeRepository
 
         $result = $this->dbConnection->fetchOne($select);
 
-        return $result ? (int)$result : null;
+        return $result ? $result : null;
     }
 
     public function setOptionId($entityType, $attributeCode, $optionCode, $optionId)
