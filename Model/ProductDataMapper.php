@@ -2,9 +2,7 @@
 namespace SnowIO\AttributeOptionCode\Model;
 
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Api\ProductAttributeManagementInterface;
 use Magento\Framework\Api\AttributeInterface;
-use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface as CodedOptionRepository;
 use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface as CodedOption;
 use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterfaceFactory as CodedOptionFactory;
@@ -13,8 +11,7 @@ class ProductDataMapper
 {
     private $codedOptionRepository;
     private $codedOptionFactory;
-    private $productAttributeManagement;
-    private $codesOfAttributesToMap = [];
+    private $attributeSetRepository;
     private $attributeOptionCodeRepository;
 
     const PRODUCT_ENTITY_TYPE_ID = 4;
@@ -22,18 +19,18 @@ class ProductDataMapper
     public function __construct(
         CodedOptionRepository $codedOptionRepository,
         CodedOptionFactory $codedOptionFactory,
-        ProductAttributeManagementInterface $productAttributeManagement,
+        AttributeSetRepository $attributeSetRepository,
         AttributeOptionCodeRepository $attributeOptionCodeRepository
     ) {
         $this->codedOptionRepository = $codedOptionRepository;
         $this->codedOptionFactory = $codedOptionFactory;
-        $this->productAttributeManagement = $productAttributeManagement;
+        $this->attributeSetRepository = $attributeSetRepository;
         $this->attributeOptionCodeRepository = $attributeOptionCodeRepository;
     }
 
     public function replaceOptionCodesWithOptionIds(ProductInterface $product)
     {
-        $codesOfAttributesToMap = $this->getCodesOfAttributesToMap($product->getAttributeSetId());
+        $codesOfAttributesToMap = $this->attributeSetRepository->getAttributesSupportingOptionCodes($product->getAttributeSetId());
 
         foreach ($codesOfAttributesToMap as $attributeCode) {
             if (null !== $customAttribute = $product->getCustomAttribute($attributeCode)) {
@@ -44,29 +41,13 @@ class ProductDataMapper
 
     public function replaceOptionIdsWithOptionCodes(ProductInterface $product)
     {
-        $codesOfAttributesToMap = $this->getCodesOfAttributesToMap($product->getAttributeSetId());
+        $codesOfAttributesToMap = $this->attributeSetRepository->getAttributesSupportingOptionCodes($product->getAttributeSetId());
 
         foreach ($codesOfAttributesToMap as $attributeCode) {
             if (null !== $customAttribute = $product->getCustomAttribute($attributeCode)) {
                 $this->replaceOptionIdWithOptionCode($customAttribute, $product);
             }
         }
-    }
-
-    private function getCodesOfAttributesToMap($attributeSetId)
-    {
-        if (!isset($this->codesOfAttributesToMap[$attributeSetId])) {
-            $attributes = $this->productAttributeManagement->getAttributes($attributeSetId);
-            $attributeCodes = [];
-            foreach ($attributes as $attribute) {
-                if ($this->shouldMapAttribute($attribute)) {
-                    $attributeCodes[] = $attribute->getAttributeCode();
-                }
-            }
-            $this->codesOfAttributesToMap[$attributeSetId] = $attributeCodes;
-        }
-
-        return $this->codesOfAttributesToMap[$attributeSetId];
     }
 
     private function replaceOptionCodeWithOptionId(AttributeInterface $customAttribute, ProductInterface $product)
@@ -122,16 +103,5 @@ class ProductDataMapper
             }
             $product->setCustomAttribute($customAttribute->getAttributeCode(), $optionCode);
         }
-    }
-
-    private function shouldMapAttribute(\Magento\Eav\Api\Data\AttributeInterface $attribute)
-    {
-        $sourceModel = $attribute->getSourceModel();
-
-        if (null === $sourceModel) {
-            return in_array($attribute->getFrontendInput(), ['select', 'multiselect']);
-        }
-
-        return $sourceModel === Table::class;
     }
 }
