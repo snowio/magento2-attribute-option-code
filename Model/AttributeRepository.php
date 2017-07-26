@@ -1,11 +1,11 @@
 <?php
 namespace SnowIO\AttributeOptionCode\Model;
 
-use Magento\Catalog\Api\Data\ProductAttributeInterface;
-use Magento\Catalog\Api\Data\ProductAttributeSearchResultsInterface;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
+use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\App\CacheInterface;
 
 class AttributeRepository
@@ -47,27 +47,35 @@ class AttributeRepository
         );
     }
 
-    private function getAttributeCodes(ProductAttributeSearchResultsInterface $searchResults): array
+    private function getAttributeCodes(SearchResultsInterface $searchResults): array
     {
-        return \array_map(function (ProductAttributeInterface $attribute) {
+        return \array_map(function (AttributeInterface $attribute) {
             return $attribute->getAttributeCode();
         }, $searchResults->getItems());
     }
 
-    private function findSelectAttributes(): ProductAttributeSearchResultsInterface
+    private function findSelectAttributes(): SearchResultsInterface
     {
         $this->searchCriteriaBuilder->create(); // this is the only way to ensure that the builder is empty
         $this->searchCriteriaBuilder->addFilter('frontend_input', ['select', 'multiselect'], 'in');
         $this->searchCriteriaBuilder->addFilter('source_model', null);
         $searchCriteria = $this->searchCriteriaBuilder->create();
+        /*
+         * ProductAttributeRepositoryInterface::getList() returns an instance of Magento\Framework\Api\SearchResults,
+         * not ProductAttributeSearchResultsInterface as the phpdoc states
+         */
         return $this->productAttributeRepository->getList($searchCriteria);
     }
 
-    private function findAttributesWithTableSource(): ProductAttributeSearchResultsInterface
+    private function findAttributesWithTableSource(): SearchResultsInterface
     {
         $this->searchCriteriaBuilder->create(); // this is the only way to ensure that the builder is empty
         $this->searchCriteriaBuilder->addFilter('source_model', Table::class);
         $searchCriteria = $this->searchCriteriaBuilder->create();
+        /*
+         * ProductAttributeRepositoryInterface::getList() returns an instance of Magento\Framework\Api\SearchResults,
+         * not ProductAttributeSearchResultsInterface as the phpdoc states
+         */
         return $this->productAttributeRepository->getList($searchCriteria);
     }
 }
