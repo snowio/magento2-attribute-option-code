@@ -58,7 +58,7 @@ class AttributeRepository
     {
         $this->searchCriteriaBuilder->create(); // this is the only way to ensure that the builder is empty
         $this->searchCriteriaBuilder->addFilter('frontend_input', ['select', 'multiselect'], 'in');
-        $this->searchCriteriaBuilder->addFilter('source_model', null);
+        $this->searchCriteriaBuilder->addFilter('source_model', null, 'null');
         $searchCriteria = $this->searchCriteriaBuilder->create();
         /*
          * ProductAttributeRepositoryInterface::getList() returns an instance of Magento\Framework\Api\SearchResults,
