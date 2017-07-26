@@ -11,7 +11,7 @@ class ProductDataMapper
 {
     private $codedOptionRepository;
     private $codedOptionFactory;
-    private $attributeSetRepository;
+    private $attributeRepository;
     private $attributeOptionCodeRepository;
 
     const PRODUCT_ENTITY_TYPE_ID = 4;
@@ -19,18 +19,18 @@ class ProductDataMapper
     public function __construct(
         CodedOptionRepository $codedOptionRepository,
         CodedOptionFactory $codedOptionFactory,
-        AttributeSetRepository $attributeSetRepository,
+        AttributeRepository $attributeRepository,
         AttributeOptionCodeRepository $attributeOptionCodeRepository
     ) {
         $this->codedOptionRepository = $codedOptionRepository;
         $this->codedOptionFactory = $codedOptionFactory;
-        $this->attributeSetRepository = $attributeSetRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->attributeOptionCodeRepository = $attributeOptionCodeRepository;
     }
 
     public function replaceOptionCodesWithOptionIds(ProductInterface $product)
     {
-        $codesOfAttributesToMap = $this->attributeSetRepository->getAttributesSupportingOptionCodes($product->getAttributeSetId());
+        $codesOfAttributesToMap = $this->attributeRepository->getAttributesSupportingOptionCodes();
 
         foreach ($codesOfAttributesToMap as $attributeCode) {
             if (null !== $customAttribute = $product->getCustomAttribute($attributeCode)) {
@@ -41,7 +41,7 @@ class ProductDataMapper
 
     public function replaceOptionIdsWithOptionCodes(ProductInterface $product)
     {
-        $codesOfAttributesToMap = $this->attributeSetRepository->getAttributesSupportingOptionCodes($product->getAttributeSetId());
+        $codesOfAttributesToMap = $this->attributeRepository->getAttributesSupportingOptionCodes();
 
         foreach ($codesOfAttributesToMap as $attributeCode) {
             if (null !== $customAttribute = $product->getCustomAttribute($attributeCode)) {
