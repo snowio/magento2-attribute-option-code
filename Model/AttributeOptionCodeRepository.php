@@ -44,6 +44,20 @@ class AttributeOptionCodeRepository
         return $result ? $result : null;
     }
 
+    public function getOptionCodes($entityType, $attributeCode, $optionIds)
+    {
+        $select = $this->dbConnection->select()
+            ->from(['t' => $this->dbConnection->getTableName('option_code')], ['option_id', 'option_code'])
+            ->join(['a' => $this->dbConnection->getTableName('eav_attribute')], 'a.attribute_id = t.attribute_id', [])
+            ->where('a.attribute_code = ?', $attributeCode)
+            ->where('a.entity_type_id = ?', $entityType)
+            ->where('t.option_id in (?)', $optionIds);
+
+        $result = $this->dbConnection->fetchPairs($select);
+
+        return $result ? $result : [];
+    }
+
     public function setOptionId($entityType, $attributeCode, $optionCode, $optionId)
     {
         $tableName = $this->dbConnection->getTableName('option_code');
