@@ -6,7 +6,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Phrase;
 
-class AttributeOptionCodeRepository
+class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInterface
 {
     private $dbConnection;
     

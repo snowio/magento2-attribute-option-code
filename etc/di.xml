@@ -15,6 +15,9 @@
     <preference
         for="SnowIO\AttributeOptionCode\Api\Data\ProductInterface"
         type="SnowIO\AttributeOptionCode\Model\Product" />
+    <preference
+        for="SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface"
+        type="SnowIO\AttributeOptionCode\Model\AttributeOptionCodeRepository" />
 
     <type name="Magento\Eav\Model\EavCustomAttributeTypeLocator">
         <arguments>
