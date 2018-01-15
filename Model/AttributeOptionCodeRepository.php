@@ -5,6 +5,7 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Phrase;
+use SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface;
 
 class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInterface
 {
