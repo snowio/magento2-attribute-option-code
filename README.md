@@ -67,7 +67,7 @@ php bin/magento setup:upgrade
 * `:optionCode` *string* : The attribute option code.
 
 ### Specifying attribute options in products
-####URI parameters
+#### URI parameters
 * `:sku` *string* : The products sku.
 
 #### Request message body (JSON)
