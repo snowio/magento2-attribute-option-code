@@ -12,7 +12,7 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
     /**
      * @inheritDoc
      *
-     * @return \SnowIO\AttributeOptionCode\Api\Data\ProductExtensionInterface|\Magento\Catalog\Api\Data\ProductExtensionInterface|null
+     * @return \Magento\Catalog\Api\Data\ProductExtensionInterface|null
      */
     public function getExtensionAttributes();
 }
