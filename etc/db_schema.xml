@@ -1,0 +1,16 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="option_code" resource="default">
+        <column xsi:type="int" name="option_id" unsigned="true" nullable="false" comment="Option Id"/>
+        <column xsi:type="smallint" name="attribute_id" unsigned="true" nullable="false" comment="Attribute Id" />
+        <column xsi:type="varchar" name="option_code" length="255" nullable="false" comment="Option Code"/>
+        <constraint xsi:type="foreign" referenceId="OPTION_CODE_OPTION_ID" table="option_code" column="option_id" referenceTable="eav_attribute_option" referenceColumn="option_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="OPTION_CODE_ATTRIBUTE_ID" table="option_code" column="attribute_id" referenceTable="eav_attribute" referenceColumn="attribute_id" onDelete="CASCADE"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="option_id"/>
+        </constraint>
+        <index xsi:type="unique" referenceId="OPTION_CODE_ATTRIBUTE_ID_OPTION_CODE" indexType="btree">
+            <column name="attribute_id"/>
+            <column name="option_code" />
+        </index>
+    </table>
+</schema>

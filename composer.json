@@ -10,9 +10,9 @@
     ],
     "require": {
         "php": ">=5.6",
-        "magento/framework": "^100|^101|^102",
-        "magento/module-eav": "^100|^101|^102",
-        "magento/module-catalog": "^101|^102|^103"
+        "magento/framework": "^102",
+        "magento/module-eav": "^102",
+        "magento/module-catalog": "^102|^103"
     },
     "autoload": {
         "files": [ "registration.php" ],
