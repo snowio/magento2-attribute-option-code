@@ -54,13 +54,11 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
 
     private function addOption($entityType, $attributeCode, $optionCode, MagentoAttributeOption $option)
     {
-        $maxExistingOptionId = $this->optionCodeRepository->getMaxOptionId($entityType, $attributeCode) ?: 0;
-        $this->optionManagementService->add($entityType, $attributeCode, $option);
-        $newOptionId = $this->optionCodeRepository->getMaxOptionId($entityType, $attributeCode) ?: 0;
+        $newOptionId = $this->optionManagementService->add($entityType, $attributeCode, $option);
 
-        if ($newOptionId <= $maxExistingOptionId) {
-            throw new \RuntimeException('Failed to add option.');
-        }
+        // Magento returns the new option id prefixed with "id_"
+        // We remove non numeric characters to get the correct option id
+        $newOptionId = preg_replace("/[^0-9]/", "", $newOptionId);
 
         $this->optionCodeRepository->setOptionId($entityType, $attributeCode, $optionCode, $newOptionId);
     }
