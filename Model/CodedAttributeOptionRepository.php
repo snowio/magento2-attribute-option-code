@@ -6,21 +6,26 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface;
 use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface;
 use Magento\Eav\Api\Data\AttributeOptionInterface as MagentoAttributeOption;
+use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 
 class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryInterface
 {
     private $optionManagementService;
     private $optionCodeRepository;
     private $optionConverter;
+    private $productAttributeRepository;
+
 
     public function __construct(
         AttributeOptionManagementInterface $optionManagementService,
         AttributeOptionCodeRepository $optionCodeRepository,
-        OptionConverter $optionConverter
+        OptionConverter $optionConverter,
+        ProductAttributeRepositoryInterface $productAttributeRepository
     ) {
         $this->optionManagementService = $optionManagementService;
         $this->optionCodeRepository = $optionCodeRepository;
         $this->optionConverter = $optionConverter;
+        $this->productAttributeRepository = $productAttributeRepository;
     }
 
     public function save($entityType, $attributeCode, CodedAttributeOptionInterface $option)
@@ -31,7 +36,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         if (null === $magentoOption->getValue()) {
             $this->addOption($entityType, $attributeCode, $optionCode, $magentoOption);
         } else {
-            $this->optionManagementService->add($entityType, $attributeCode, $magentoOption);
+            $this->updateOption($attributeCode, $magentoOption);
         }
     }
 
@@ -54,14 +59,33 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
 
     private function addOption($entityType, $attributeCode, $optionCode, MagentoAttributeOption $option)
     {
-        $maxExistingOptionId = $this->optionCodeRepository->getMaxOptionId($entityType, $attributeCode) ?: 0;
-        $this->optionManagementService->add($entityType, $attributeCode, $option);
-        $newOptionId = $this->optionCodeRepository->getMaxOptionId($entityType, $attributeCode) ?: 0;
+        $newOptionId = $this->optionManagementService->add($entityType, $attributeCode, $option);
 
-        if ($newOptionId <= $maxExistingOptionId) {
-            throw new \RuntimeException('Failed to add option.');
-        }
+        // Magento returns the new option id prefixed with "id_"
+        // We remove non numeric characters to get the correct option id
+        $newOptionId = preg_replace("/[^0-9]/", "", $newOptionId);
 
         $this->optionCodeRepository->setOptionId($entityType, $attributeCode, $optionCode, $newOptionId);
+    }
+
+    public function updateOption($attributeCode, MagentoAttributeOption $magentoOption)
+    {
+        $attribute = $this->productAttributeRepository->get($attributeCode);
+        $options = $attribute->getOptions();
+        foreach ($options as $option) {
+            /** @var MagentoAttributeOption $option */
+            if ($option->getValue() == $magentoOption->getValue()) {
+
+                $option->setLabel($magentoOption->getLabel());
+                $option->setSortOrder($magentoOption->getSortOrder());
+                $option->setStoreLabels($magentoOption->getStoreLabels());
+                $option->setIsDefault($magentoOption->getIsDefault());
+
+                $attribute->setOptions([$option]);
+                $this->productAttributeRepository->save($attribute);
+
+                break;
+            }
+        }
     }
 }
