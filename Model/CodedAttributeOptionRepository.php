@@ -7,27 +7,56 @@ use SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface;
 use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface;
 use Magento\Eav\Api\Data\AttributeOptionInterface as MagentoAttributeOption;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
+use Magento\Catalog\Model\Product\Attribute\OptionManagement as ProductOptionManagement;
+use Magento\Eav\Model\Config;
+use Magento\Catalog\Model\Product;
 
 class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryInterface
 {
+    /** @var AttributeOptionManagementInterface */
     private $optionManagementService;
+    /** @var AttributeOptionCodeRepository */
     private $optionCodeRepository;
+    /** @var OptionConverter */
     private $optionConverter;
+    /** @var ProductAttributeRepositoryInterface */
     private $productAttributeRepository;
+    /** @var ProductOptionManagement */
+    private $productOptionManagement;
+    /** @var Config */
+    private $eavConfig;
 
-
+    /**
+     * CodedAttributeOptionRepository constructor.
+     * @param AttributeOptionManagementInterface $optionManagementService
+     * @param AttributeOptionCodeRepository $optionCodeRepository
+     * @param OptionConverter $optionConverter
+     * @param ProductAttributeRepositoryInterface $productAttributeRepository
+     * @param ProductOptionManagement $productOptionManagement
+     * @param Config $eavConfig
+     */
     public function __construct(
         AttributeOptionManagementInterface $optionManagementService,
         AttributeOptionCodeRepository $optionCodeRepository,
         OptionConverter $optionConverter,
-        ProductAttributeRepositoryInterface $productAttributeRepository
+        ProductAttributeRepositoryInterface $productAttributeRepository,
+        ProductOptionManagement $productOptionManagement,
+        Config $eavConfig
     ) {
         $this->optionManagementService = $optionManagementService;
         $this->optionCodeRepository = $optionCodeRepository;
         $this->optionConverter = $optionConverter;
         $this->productAttributeRepository = $productAttributeRepository;
+        $this->productOptionManagement = $productOptionManagement;
+        $this->eavConfig = $eavConfig;
     }
 
+    /**
+     * @param int $entityType
+     * @param string $attributeCode
+     * @param CodedAttributeOptionInterface $option
+     * @throws \Magento\Framework\Exception\InputException
+     */
     public function save($entityType, $attributeCode, CodedAttributeOptionInterface $option)
     {
         $optionCode = $option->getValue();
@@ -40,10 +69,17 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         }
     }
 
+    /**
+     * @param int $entityType
+     * @param string $attributeCode
+     * @param string $optionCode
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
+     */
     public function delete($entityType, $attributeCode, $optionCode)
     {
         $optionId = $this->optionCodeRepository->getOptionId($entityType, $attributeCode, $optionCode);
-        
+
         if (null === $optionId) {
             return;
         }
@@ -57,9 +93,28 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $this->optionCodeRepository->removeOption($entityType, $attributeCode, $optionCode, $optionId);
     }
 
+    /**
+     * @param $entityType
+     * @param $attributeCode
+     * @param $optionCode
+     * @param MagentoAttributeOption $option
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
+     */
     private function addOption($entityType, $attributeCode, $optionCode, MagentoAttributeOption $option)
     {
-        $newOptionId = $this->optionManagementService->add($entityType, $attributeCode, $option);
+        if ($this->eavConfig->getEntityType($entityType)->getEntityTypeCode() === Product::ENTITY) {
+            /**
+             * If attribute option is for product entity type, call the product add method directly.
+             * This must be called directly to ensure the swatch plugin is executed.
+             * If the swatch plugin is not executed, swatch attribute options are not saved correctly.
+             *
+             * @see \Magento\Swatches\Plugin\Eav\Model\Entity\Attribute\OptionManagement::beforeAdd
+             */
+            $newOptionId = $this->productOptionManagement->add($attributeCode, $option);
+        } else {
+            $newOptionId = $this->optionManagementService->add($entityType, $attributeCode, $option);
+        }
 
         // Magento returns the new option id prefixed with "id_"
         // We remove non numeric characters to get the correct option id
@@ -68,6 +123,13 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $this->optionCodeRepository->setOptionId($entityType, $attributeCode, $optionCode, $newOptionId);
     }
 
+    /**
+     * @param $attributeCode
+     * @param MagentoAttributeOption $magentoOption
+     * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
+     */
     public function updateOption($attributeCode, MagentoAttributeOption $magentoOption)
     {
         $attribute = $this->productAttributeRepository->get($attributeCode);
