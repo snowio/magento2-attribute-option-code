@@ -75,9 +75,9 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
         $tableName = $this->dbConnection->getTableName('option_code');
 
         $this->dbConnection->delete($tableName, [
-            'attribute_id' => $this->getAttributeId($entityType, $attributeCode),
-            'option_code' => $optionCode,
-            'option_id' => $optionId
+            $this->dbConnection->quoteInto('attribute_id = ?', $this->getAttributeId($entityType, $attributeCode)),
+            $this->dbConnection->quoteInto('option_code = ?', $optionCode),
+            $this->dbConnection->quoteInto('option_id = ?', $optionId)
         ]);
     }
 
