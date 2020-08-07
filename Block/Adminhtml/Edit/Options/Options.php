@@ -71,7 +71,7 @@ class Options extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Option
     }
 
     /**
-     * @param array $result
+     * @param array $values
      * @return array
      */
     private function getIdsFromValuesData(array $values): array
