@@ -32,4 +32,8 @@
             </argument>
         </arguments>
     </type>
+
+    <preference
+            for="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options"
+            type="SnowIO\AttributeOptionCode\Block\Adminhtml\Edit\Options\Options"/>
 </config>
