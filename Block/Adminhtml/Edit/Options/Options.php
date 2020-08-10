@@ -3,9 +3,14 @@
 namespace SnowIO\AttributeOptionCode\Block\Adminhtml\Edit\Options;
 
 use Magento\Catalog\Setup\CategorySetup;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Registry;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory;
+use Magento\Framework\Validator\UniversalFactory;
+use Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options as MagentoEavOptions;
 use SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface;
 
-class Options extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options
+class Options extends MagentoEavOptions
 {
     /** @var AttributeOptionCodeRepositoryInterface */
     private $attributeOptionCodeRepository;
@@ -17,18 +22,18 @@ class Options extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Option
 
     /**
      * Options constructor.
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory $attrOptionCollectionFactory
-     * @param \Magento\Framework\Validator\UniversalFactory $universalFactory
+     * @param Context $context
+     * @param Registry $registry
+     * @param CollectionFactory $attrOptionCollectionFactory
+     * @param UniversalFactory $universalFactory
      * @param AttributeOptionCodeRepositoryInterface $attributeOptionCodeRepository
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory $attrOptionCollectionFactory,
-        \Magento\Framework\Validator\UniversalFactory $universalFactory,
+        Context $context,
+        Registry $registry,
+        CollectionFactory $attrOptionCollectionFactory,
+        UniversalFactory $universalFactory,
         AttributeOptionCodeRepositoryInterface $attributeOptionCodeRepository,
         array $data = []
     ) {
@@ -42,6 +47,10 @@ class Options extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Option
     public function getOptionValues()
     {
         $values = parent::getOptionValues();
+        if (!$values) {
+            return null;
+        }
+
         return $this->addOptionCodeToOptionValuesData($values);
     }
 
