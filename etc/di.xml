@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference
-        for="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface"
-        type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionRepository" />
+            for="SnowIO\AttributeOptionCode\Api\CodedAttributeOptionRepositoryInterface"
+            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionRepository" />
     <preference
-        for="SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface"
-        type="SnowIO\AttributeOptionCode\Model\ProductRepository" />
+            for="SnowIO\AttributeOptionCode\Api\ProductRepositoryInterface"
+            type="SnowIO\AttributeOptionCode\Model\ProductRepository" />
     <preference
-        for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface"
-        type="SnowIO\AttributeOptionCode\Model\CodedAttributeOption" />
+            for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterface"
+            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOption" />
     <preference
-        for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
-        type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
+            for="SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionLabelInterface"
+            type="SnowIO\AttributeOptionCode\Model\CodedAttributeOptionLabel" />
     <preference
-        for="SnowIO\AttributeOptionCode\Api\Data\ProductInterface"
-        type="SnowIO\AttributeOptionCode\Model\Product" />
+            for="SnowIO\AttributeOptionCode\Api\Data\ProductInterface"
+            type="SnowIO\AttributeOptionCode\Model\Product" />
     <preference
-        for="SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface"
-        type="SnowIO\AttributeOptionCode\Model\AttributeOptionCodeRepository" />
+            for="SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface"
+            type="SnowIO\AttributeOptionCode\Model\AttributeOptionCodeRepository" />
 
     <type name="Magento\Eav\Model\EavCustomAttributeTypeLocator">
         <arguments>
@@ -32,4 +32,9 @@
             </argument>
         </arguments>
     </type>
+
+    <preference
+            for="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options"
+            type="SnowIO\AttributeOptionCode\Block\Adminhtml\Edit\Options\Options"/>
+
 </config>
