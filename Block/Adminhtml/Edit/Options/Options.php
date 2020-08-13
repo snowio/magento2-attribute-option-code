@@ -42,13 +42,13 @@ class Options extends MagentoEavOptions
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     public function getOptionValues()
     {
         $values = parent::getOptionValues();
         if (!$values) {
-            return null;
+            return [];
         }
 
         return $this->addOptionCodeToOptionValuesData($values);
