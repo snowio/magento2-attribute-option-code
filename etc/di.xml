@@ -36,8 +36,4 @@
     <preference
         for="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options"
         type="SnowIO\AttributeOptionCode\Block\Adminhtml\Edit\Options\Options"/>
-
-    <type name="Magento\Catalog\Controller\Adminhtml\Product\Attribute\Validate">
-        <plugin name="validate-unique-option-code" type="SnowIO\AttributeOptionCode\Plugin\ValidateOptionCode" sortOrder="1"/>
-    </type>
 </config>
