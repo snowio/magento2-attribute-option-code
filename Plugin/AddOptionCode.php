@@ -31,7 +31,7 @@ class AddOptionCode
     }
 
     /**
-     * @param Visual|Text|Option $subject
+     * @param Visual|Text|Options $subject
      * @param array $result
      * @return array
      */
@@ -67,7 +67,7 @@ class AddOptionCode
     }
 
     /**
-     * @param array $result
+     * @param array $values
      * @return array
      */
     private function getIdsFromValuesData(array $values): array
