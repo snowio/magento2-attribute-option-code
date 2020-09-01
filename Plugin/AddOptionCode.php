@@ -48,13 +48,13 @@ class AddOptionCode
     private function addOptionCodeToOptionValuesData(array $values): array
     {
         $ids = $this->getIdsFromValuesData($values);
-        $attributeCode = $this->getAttributeObject() ? $this->getAttributeObject()->getAttributeCode() : null;
+        $attributeObject = $this->getAttributeObject();
 
-        if(!$attributeCode) {
+        if (!$attributeObject) {
             return $values;
         }
 
-        $optionCodes = $this->getOptionCodes($attributeCode, $ids);
+        $optionCodes = $this->getOptionCodes($attributeObject->getAttributeCode(), $ids);
         return $this->mapOptionCodeWithValuesData($optionCodes, $values);
     }
 
