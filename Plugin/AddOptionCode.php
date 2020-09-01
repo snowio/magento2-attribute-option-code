@@ -48,9 +48,13 @@ class AddOptionCode
     private function addOptionCodeToOptionValuesData(array $values): array
     {
         $ids = $this->getIdsFromValuesData($values);
-        $attributeCode = $this->getAttributeObject()->getAttributeCode();
-        $optionCodes = $this->getOptionCodes($attributeCode, $ids);
+        $attributeCode = $this->getAttributeObject() ? $this->getAttributeObject()->getAttributeCode() : null;
 
+        if(!$attributeCode) {
+            return $values;
+        }
+
+        $optionCodes = $this->getOptionCodes($attributeCode, $ids);
         return $this->mapOptionCodeWithValuesData($optionCodes, $values);
     }
 
@@ -93,10 +97,15 @@ class AddOptionCode
     }
 
     /**
-     * @return AbstractAttribute
+     * @return AbstractAttribute|null
      */
-    private function getAttributeObject()
+    private function getAttributeObject(): ?AbstractAttribute
     {
-        return $this->registry->registry('entity_attribute');
+        $attribute = $this->registry->registry('entity_attribute');
+
+        if (!$attribute instanceof AbstractAttribute){
+            return null;
+        }
+        return $attribute;
     }
 }
