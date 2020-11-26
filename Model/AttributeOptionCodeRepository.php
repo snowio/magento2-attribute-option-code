@@ -28,7 +28,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $result = $this->dbConnection->fetchOne($select);
 
-        return $result !== '' ? (int)$result : null;
+        return $result ? (int)$result : null;
     }
 
     public function getOptionCode($entityType, $attributeCode, $optionId)
@@ -42,7 +42,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $result = $this->dbConnection->fetchOne($select);
 
-        return $result !== '' ? $result : null;
+        return $result ? $result : null;
     }
 
     public function getOptionCodes($entityType, $attributeCode, $optionIds)
@@ -56,7 +56,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $result = $this->dbConnection->fetchPairs($select);
 
-        return $result !== [] ? $result : [];
+        return $result ? $result : [];
     }
 
     public function setOptionId($entityType, $attributeCode, $optionCode, $optionId)
@@ -91,7 +91,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
             ->where('attribute_id = ?', $attributeId);
         $maxOptionId = $this->dbConnection->fetchOne($select);
 
-        if ('' === $maxOptionId) {
+        if ('' === (string)$maxOptionId) {
             return null;
         }
 
@@ -107,7 +107,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $attributeId = $this->dbConnection->fetchOne($select);
 
-        if ('' === $attributeId) {
+        if ('' === (string)$attributeId) {
             throw new LocalizedException(new Phrase('The attribute %1 does not exist.', [$attributeCode]));
         }
 
