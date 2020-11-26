@@ -28,8 +28,8 @@ class AttributeRepository
     {
         $cacheKey = \md5(self::class . '/attributes_supporting_option_codes');
 
-        if (($json = $this->cache->load($cacheKey)) !== '') {
-            $attributeCodes = \json_decode($json, $assoc = true, 512, JSON_THROW_ON_ERROR);
+        if ($json = $this->cache->load($cacheKey)) {
+            $attributeCodes = \json_decode($json, $assoc = true);
         } else {
             $attributeCodes = $this->findAttributesSupportingOptionCodes();
             $json = \json_encode($attributeCodes, JSON_THROW_ON_ERROR);

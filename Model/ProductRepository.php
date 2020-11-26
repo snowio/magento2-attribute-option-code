@@ -28,7 +28,9 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function save(ProductInterface $product, $saveOptions = false)
     {
-        if ($this->storeManager->getStore()->getCode() !== Store::ADMIN_CODE && !$this->productResourceModel->getIdBySku($product->getSku())) {
+        if ($this->storeManager->getStore()->getCode() !== Store::ADMIN_CODE && 
+            !$this->productResourceModel->getIdBySku($product->getSku())
+        ) {
             throw new InputException(
                 new Phrase(
                     'Product needs to exist in admin (all) scope before being created in store scope'
