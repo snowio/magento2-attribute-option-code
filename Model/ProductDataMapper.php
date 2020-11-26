@@ -9,10 +9,10 @@ use SnowIO\AttributeOptionCode\Api\Data\CodedAttributeOptionInterfaceFactory as 
 
 class ProductDataMapper
 {
-    private $codedOptionRepository;
-    private $codedOptionFactory;
-    private $attributeRepository;
-    private $attributeOptionCodeRepository;
+    private CodedOptionRepository $codedOptionRepository;
+    private CodedOptionFactory $codedOptionFactory;
+    private \SnowIO\AttributeOptionCode\Model\AttributeRepository $attributeRepository;
+    private \SnowIO\AttributeOptionCode\Model\AttributeOptionCodeRepository $attributeOptionCodeRepository;
 
     const PRODUCT_ENTITY_TYPE_ID = 4;
 
@@ -20,7 +20,7 @@ class ProductDataMapper
         CodedOptionRepository $codedOptionRepository,
         CodedOptionFactory $codedOptionFactory,
         AttributeRepository $attributeRepository,
-        AttributeOptionCodeRepository $attributeOptionCodeRepository
+        \SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface $attributeOptionCodeRepository
     ) {
         $this->codedOptionRepository = $codedOptionRepository;
         $this->codedOptionFactory = $codedOptionFactory;
@@ -57,9 +57,7 @@ class ProductDataMapper
 
         if (is_array($optionCodeOrCodes)) {
             // suppress errors below because array_map generates a warning when the map fn throws
-            $optionIdOrIds = @array_map(function ($optionCode) use ($attributeCode) {
-                return $this->getOrCreateOptionId($attributeCode, $optionCode);
-            }, $optionCodeOrCodes);
+            $optionIdOrIds = @array_map(fn($optionCode) => $this->getOrCreateOptionId($attributeCode, $optionCode), $optionCodeOrCodes);
         } else {
             $optionIdOrIds = $this->getOrCreateOptionId($attributeCode, $optionCodeOrCodes);
         }

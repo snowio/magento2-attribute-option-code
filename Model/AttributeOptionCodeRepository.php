@@ -9,9 +9,9 @@ use SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface;
 
 class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInterface
 {
-    private $dbConnection;
+    private \Magento\Framework\DB\Adapter\AdapterInterface $dbConnection;
     
-    public function __construct(Context $dbContext, $connectionName = null)
+    public function __construct(\Magento\Framework\ObjectManager\ContextInterface $dbContext, $connectionName = null)
     {
         $connectionName = $connectionName ?: ResourceConnection::DEFAULT_CONNECTION;
         $this->dbConnection = $dbContext->getResources()->getConnection($connectionName);
@@ -28,7 +28,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $result = $this->dbConnection->fetchOne($select);
 
-        return $result ? (int)$result : null;
+        return $result !== '' ? (int)$result : null;
     }
 
     public function getOptionCode($entityType, $attributeCode, $optionId)
@@ -42,7 +42,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $result = $this->dbConnection->fetchOne($select);
 
-        return $result ? $result : null;
+        return $result !== '' ? $result : null;
     }
 
     public function getOptionCodes($entityType, $attributeCode, $optionIds)
@@ -56,7 +56,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $result = $this->dbConnection->fetchPairs($select);
 
-        return $result ? $result : [];
+        return $result !== [] ? $result : [];
     }
 
     public function setOptionId($entityType, $attributeCode, $optionCode, $optionId)
@@ -91,7 +91,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
             ->where('attribute_id = ?', $attributeId);
         $maxOptionId = $this->dbConnection->fetchOne($select);
 
-        if ('' === (string)$maxOptionId) {
+        if ('' === $maxOptionId) {
             return null;
         }
 
@@ -107,7 +107,7 @@ class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInte
 
         $attributeId = $this->dbConnection->fetchOne($select);
 
-        if ('' === (string)$attributeId) {
+        if ('' === $attributeId) {
             throw new LocalizedException(new Phrase('The attribute %1 does not exist.', [$attributeCode]));
         }
 

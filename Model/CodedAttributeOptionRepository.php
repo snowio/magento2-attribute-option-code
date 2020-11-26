@@ -13,18 +13,12 @@ use Magento\Catalog\Model\Product;
 
 class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryInterface
 {
-    /** @var AttributeOptionManagementInterface */
-    private $optionManagementService;
-    /** @var AttributeOptionCodeRepository */
-    private $optionCodeRepository;
-    /** @var OptionConverter */
-    private $optionConverter;
-    /** @var ProductAttributeRepositoryInterface */
-    private $productAttributeRepository;
-    /** @var ProductOptionManagement */
-    private $productOptionManagement;
-    /** @var Config */
-    private $eavConfig;
+    private \Magento\Eav\Api\AttributeOptionManagementInterface $optionManagementService;
+    private \SnowIO\AttributeOptionCode\Model\AttributeOptionCodeRepository $optionCodeRepository;
+    private \SnowIO\AttributeOptionCode\Model\OptionConverter $optionConverter;
+    private \Magento\Catalog\Api\ProductAttributeRepositoryInterface $productAttributeRepository;
+    private ProductOptionManagement $productOptionManagement;
+    private \Magento\Eav\Model\Config $eavConfig;
 
     /**
      * CodedAttributeOptionRepository constructor.
@@ -37,7 +31,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
      */
     public function __construct(
         AttributeOptionManagementInterface $optionManagementService,
-        AttributeOptionCodeRepository $optionCodeRepository,
+        \SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface $optionCodeRepository,
         OptionConverter $optionConverter,
         ProductAttributeRepositoryInterface $productAttributeRepository,
         ProductOptionManagement $productOptionManagement,
@@ -136,7 +130,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $options = $attribute->getOptions();
         foreach ($options as $option) {
             /** @var MagentoAttributeOption $option */
-            if ($option->getValue() == $magentoOption->getValue()) {
+            if ($option->getValue() === $magentoOption->getValue()) {
 
                 $option->setLabel($magentoOption->getLabel());
                 $option->setSortOrder($magentoOption->getSortOrder());
