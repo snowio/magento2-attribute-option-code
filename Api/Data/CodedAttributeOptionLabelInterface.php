@@ -3,9 +3,9 @@ namespace SnowIO\AttributeOptionCode\Api\Data;
 
 interface CodedAttributeOptionLabelInterface
 {
-    const LABEL = 'label';
+    public const LABEL = 'label';
 
-    const STORE_CODE = 'store_code';
+    public const STORE_CODE = 'store_code';
 
     /**
      * Get store code

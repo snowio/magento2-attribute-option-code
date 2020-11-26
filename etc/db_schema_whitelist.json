@@ -1,0 +1,15 @@
+{
+  "option_code": {
+    "column": {
+      "option_id": true,
+      "attribute_id": true,
+      "option_code": true
+    },
+    "constraint": {
+      "PRIMARY": true,
+      "OPTION_CODE_ATTRIBUTE_ID_OPTION_CODE": true,
+      "ATTRIBUTE_OPTION_CODE_OPTION_ID_FOREIGN_KEY": true,
+      "ATTRIBUTE_OPTION_CODE_ATTRIBUTE_ID_FOREIGN_KEY": true
+    }
+  }
+}

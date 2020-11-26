@@ -9,9 +9,9 @@ use SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface;
 
 class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInterface
 {
-    private $dbConnection;
+    private \Magento\Framework\DB\Adapter\AdapterInterface $dbConnection;
     
-    public function __construct(Context $dbContext, $connectionName = null)
+    public function __construct(\Magento\Framework\ObjectManager\ContextInterface $dbContext, $connectionName = null)
     {
         $connectionName = $connectionName ?: ResourceConnection::DEFAULT_CONNECTION;
         $this->dbConnection = $dbContext->getResources()->getConnection($connectionName);

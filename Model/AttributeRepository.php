@@ -10,9 +10,9 @@ use Magento\Framework\App\CacheInterface;
 
 class AttributeRepository
 {
-    private $productAttributeRepository;
-    private $searchCriteriaBuilder;
-    private $cache;
+    private \Magento\Catalog\Api\ProductAttributeRepositoryInterface $productAttributeRepository;
+    private \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder;
+    private \Magento\Framework\App\CacheInterface $cache;
 
     public function __construct(
         ProductAttributeRepositoryInterface $productAttributeRepository,
@@ -26,13 +26,13 @@ class AttributeRepository
 
     public function getAttributesSupportingOptionCodes()
     {
-        $cacheKey = \md5(__CLASS__ . '/attributes_supporting_option_codes');
+        $cacheKey = \md5(self::class . '/attributes_supporting_option_codes');
 
         if ($json = $this->cache->load($cacheKey)) {
             $attributeCodes = \json_decode($json, $assoc = true);
         } else {
             $attributeCodes = $this->findAttributesSupportingOptionCodes();
-            $json = \json_encode($attributeCodes);
+            $json = \json_encode($attributeCodes, JSON_THROW_ON_ERROR);
             $this->cache->save($json, $cacheKey, [\Magento\Eav\Model\Entity\Attribute::CACHE_TAG], $lifetime = 600);
         }
 
@@ -49,9 +49,7 @@ class AttributeRepository
 
     private function getAttributeCodes(SearchResultsInterface $searchResults): array
     {
-        return \array_map(function (AttributeInterface $attribute) {
-            return $attribute->getAttributeCode();
-        }, $searchResults->getItems());
+        return \array_map(fn(AttributeInterface $attribute) => $attribute->getAttributeCode(), $searchResults->getItems());
     }
 
     private function findSelectAttributes(): SearchResultsInterface

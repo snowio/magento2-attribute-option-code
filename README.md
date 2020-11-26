@@ -5,6 +5,10 @@ with an identifier (attribute option code) that the client can specify and later
 that were created with the client can also be deleted by specifing the attribute option code that belongs to the attribute option.
 Please refer to the endpoint table for uri endpoint paths.
 
+### Magento Versions
+- 2.3.x use 2.x tags
+- 2.4.x use master
+
 ## Prerequisites
 * PHP 5.6 or newer
 * Composer  (https://getcomposer.org/download/).

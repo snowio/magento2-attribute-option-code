@@ -13,14 +13,14 @@ use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory as MagentoOptionLa
 
 class OptionConverter
 {
-    private $optionCodeRepository;
-    private $storeRepository;
-    private $magentoOptionFactory;
-    private $magentoOptionLabelFactory;
-    private $storeIds = [];
+    private \SnowIO\AttributeOptionCode\Model\AttributeOptionCodeRepository $optionCodeRepository;
+    private \Magento\Store\Api\StoreRepositoryInterface $storeRepository;
+    private MagentoOptionFactory $magentoOptionFactory;
+    private MagentoOptionLabelFactory $magentoOptionLabelFactory;
+    private array $storeIds = [];
 
     public function __construct(
-        AttributeOptionCodeRepository $optionCodeRepository,
+        \SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface $optionCodeRepository,
         StoreRepositoryInterface $storeRepository,
         MagentoOptionFactory $magentoOptionFactory,
         MagentoOptionLabelFactory $magentoOptionLabelFactory
@@ -53,7 +53,7 @@ class OptionConverter
         $magentoOption->setIsDefault($option->getIsDefault());
 
         if (null !== $labels = $option->getStoreLabels()) {
-            $magentoOption->setStoreLabels(array_map([$this, 'convertCodedOptionLabelToMagentoOptionLabel'], $labels));
+            $magentoOption->setStoreLabels(array_map(fn(CodedOptionLabel $optionLabel) => $this->convertCodedOptionLabelToMagentoOptionLabel($optionLabel), $labels));
         }
 
         return $magentoOption;

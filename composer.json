@@ -9,15 +9,27 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
-        "magento/framework": "^100|^101|^102",
-        "magento/module-eav": "^100|^101|^102",
-        "magento/module-catalog": "^101|^102|^103"
+        "php": "~7.4.0",
+        "magento/framework": "^103",
+        "magento/module-eav": "^102",
+        "magento/module-catalog": "^104"
     },
     "autoload": {
         "files": [ "registration.php" ],
         "psr-4": {
             "SnowIO\\AttributeOptionCode\\": ""
         }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.packagist.com/ampersandhq/"
+        },
+        {
+            "packagist.org": false
+        }
+    ],
+    "require-dev": {
+        "rector/rector": "^0.8.56"
     }
 }
