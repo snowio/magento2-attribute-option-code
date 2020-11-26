@@ -6,8 +6,7 @@
       "option_code": true
     },
     "index": {
-      "ATTRIBUTE_OPTION_CODE_ATTRIBUTE_ID_INDEX": true,
-      "ATTRIBUTE_OPTION_CODE_OPTION_CODE_INDEX": true
+      "ATTRIBUTE_OPTION_CODE_INDEX": true
     },
     "constraint": {
       "PRIMARY": true,

@@ -1,18 +1,16 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="option_code" resource="default" engine="innodb" comment="Custom Order State Event Table">
+    <table name="option_code" resource="default" engine="innodb" comment="Snowio Attribute Option Code Table">
         <column xsi:type="int" name="option_id" unsigned="true" nullable="false" comment="Option Id"/>
+        <column xsi:type="smallint" name="attribute_id" unsigned="true" nullable="false" comment="Attribute Id"/>
+        <column xsi:type="varchar" name="option_code" nullable="false" length="255" comment="Option Code"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="option_id"/>
         </constraint>
-        <column xsi:type="smallint" name="attribute_id" unsigned="true" nullable="false" comment="Attribute Id"/>
-        <column xsi:type="text" name="option_code" nullable="false" comment="Option Code"/>
-        <index referenceId="ATTRIBUTE_OPTION_CODE_ATTRIBUTE_ID_INDEX" indexType="btree">
+        <constraint xsi:type="unique" referenceId="OPTION_CODE_ATTRIBUTE_ID_OPTION_CODE">
             <column name="attribute_id"/>
-        </index>
-        <index referenceId="ATTRIBUTE_OPTION_CODE_OPTION_CODE_INDEX" indexType="btree">
             <column name="option_code"/>
-        </index>
+        </constraint>
         <constraint xsi:type="foreign" referenceId="ATTRIBUTE_OPTION_CODE_OPTION_ID_FOREIGN_KEY"
                     table="option_code"
                     column="option_id"
