@@ -5,13 +5,19 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Phrase;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use SnowIO\AttributeOptionCode\Api\AttributeOptionCodeRepositoryInterface;
 
 class AttributeOptionCodeRepository implements AttributeOptionCodeRepositoryInterface
 {
-    private \Magento\Framework\DB\Adapter\AdapterInterface $dbConnection;
-    
-    public function __construct(\Magento\Framework\ObjectManager\ContextInterface $dbContext, $connectionName = null)
+    private AdapterInterface $dbConnection;
+
+    /**
+     * AttributeOptionCodeRepository constructor.
+     * @param Context $dbContext
+     * @param null $connectionName
+     */
+    public function __construct(Context $dbContext, $connectionName = null)
     {
         $connectionName = $connectionName ?: ResourceConnection::DEFAULT_CONNECTION;
         $this->dbConnection = $dbContext->getResources()->getConnection($connectionName);
