@@ -130,7 +130,7 @@ class CodedAttributeOptionRepository implements CodedAttributeOptionRepositoryIn
         $options = $attribute->getOptions();
         foreach ($options as $option) {
             /** @var MagentoAttributeOption $option */
-            if ($option->getValue() === $magentoOption->getValue()) {
+            if ((int)$option->getValue() === (int)$magentoOption->getValue()) {
 
                 $option->setLabel($magentoOption->getLabel());
                 $option->setSortOrder($magentoOption->getSortOrder());
