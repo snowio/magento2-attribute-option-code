@@ -32,4 +32,17 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options">
+        <plugin name="add-option-code-to-data" type="SnowIO\AttributeOptionCode\Plugin\AddOptionCode" sortOrder="1"/>
+    </type>
+    <preference
+            for="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options"
+            type="SnowIO\AttributeOptionCode\Block\Adminhtml\Attribute\Edit\Options\Options"/>
+    <preference
+            for="Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Text"
+            type="SnowIO\AttributeOptionCode\Block\Adminhtml\Attribute\Edit\Options\Text"/>
+    <preference
+            for="Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Visual"
+            type="SnowIO\AttributeOptionCode\Block\Adminhtml\Attribute\Edit\Options\Visual"/>
 </config>
